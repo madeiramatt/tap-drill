@@ -3,143 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tap Drill Calculator</title>
+    <title>Tap Drill Lookup</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Tap Drill Calculator</h1>
-            <p class="subtitle">Calculate tap drill diameter from thread specifications</p>
+            <h1>Tap Drill Lookup</h1>
+            <p class="subtitle">Quick reference for tap drill sizes from standard charts</p>
         </header>
 
         <main>
             <div class="calculator-card">
-                <form id="tapDrillForm">
-                    <!-- Thread System Selection -->
+                <form id="lookupForm">
+                    <!-- Thread Type Selection -->
                     <div class="form-group">
-                        <label for="threadSystem">Thread System</label>
-                        <select id="threadSystem" required>
-                            <option value="">Select thread system...</option>
-                            <option value="ISO">ISO Metric (M)</option>
-                            <option value="UNC">American National Standard (UNC/UNF/UN)</option>
-                            <option value="BSW">British Standard Whitworth (BSW)</option>
-                            <option value="ACME">American National Acme</option>
+                        <label for="threadType">Thread Type</label>
+                        <select id="threadType" required>
+                            <option value="">Select thread type...</option>
+                            <option value="imperial">Imperial/US (UNC/UNF)</option>
+                            <option value="metric">Metric (ISO)</option>
                         </select>
                     </div>
 
-                    <!-- Material Type (for UNC) -->
-                    <div class="form-group" id="materialTypeGroup" style="display: none;">
+                    <!-- Material Type -->
+                    <div class="form-group">
                         <label for="materialType">Material Type</label>
-                        <select id="materialType">
+                        <select id="materialType" required>
                             <option value="soft">Soft Materials (Aluminum, Brass, Plastics) - 75% Thread</option>
                             <option value="hard">Hard Materials (Steel, Stainless, Iron) - 50% Thread</option>
-                            <option value="custom">Custom Thread Percentage</option>
                         </select>
-                        <small class="help-text">Material type automatically sets recommended thread percentage</small>
                     </div>
 
-                    <!-- Screw Size Selection (for UNC) -->
-                    <div class="form-group" id="screwSizeGroup" style="display: none;">
-                        <label for="inputMode">Input Mode</label>
-                        <div class="toggle-group">
-                            <button type="button" class="toggle-btn active" data-mode="standard">Standard Screw Size</button>
-                            <button type="button" class="toggle-btn" data-mode="custom">Custom Diameter</button>
-                        </div>
-                    </div>
-
-                    <!-- Standard Screw Size -->
-                    <div class="form-group" id="standardScrewGroup" style="display: none;">
-                        <label for="screwSize">Screw Size</label>
-                        <select id="screwSize">
-                            <option value="">Select size...</option>
+                    <!-- Imperial Size Selection -->
+                    <div class="form-group" id="imperialSizeGroup" style="display: none;">
+                        <label for="imperialSize">Thread Size</label>
+                        <select id="imperialSize">
+                            <option value="">Select thread size...</option>
                             <optgroup label="Numbered Sizes">
-                                <option value="0">0-80 / 0-64</option>
-                                <option value="1">1-72 / 1-64</option>
-                                <option value="2">2-64 / 2-56</option>
-                                <option value="3">3-56 / 3-48</option>
-                                <option value="4">4-40</option>
-                                <option value="5">5-40</option>
-                                <option value="6">6-32</option>
-                                <option value="8">8-32</option>
-                                <option value="10">10-32 / 10-24</option>
-                                <option value="12">12-28 / 12-24</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="8">8</option>
+                                <option value="10">10</option>
+                                <option value="12">12</option>
                             </optgroup>
                             <optgroup label="Fractional Sizes">
-                                <option value="0.25">1/4"-20 / 1/4"-28</option>
-                                <option value="0.3125">5/16"-18 / 5/16"-24</option>
-                                <option value="0.375">3/8"-16 / 3/8"-24</option>
-                                <option value="0.4375">7/16"-14 / 7/16"-20</option>
-                                <option value="0.5">1/2"-13 / 1/2"-20</option>
-                                <option value="0.5625">9/16"-12 / 9/16"-18</option>
-                                <option value="0.625">5/8"-11 / 5/8"-18</option>
-                                <option value="0.75">3/4"-10 / 3/4"-16</option>
-                                <option value="0.875">7/8"-9 / 7/8"-14</option>
-                                <option value="1.0">1"-8 / 1"-12</option>
+                                <option value="0.25">1/4</option>
+                                <option value="0.3125">5/16</option>
+                                <option value="0.375">3/8</option>
+                                <option value="0.4375">7/16</option>
+                                <option value="0.5">1/2</option>
+                                <option value="0.5625">9/16</option>
+                                <option value="0.625">5/8</option>
+                                <option value="0.6875">11/16</option>
+                                <option value="0.75">3/4</option>
+                                <option value="0.8125">13/16</option>
+                                <option value="0.875">7/8</option>
+                                <option value="0.9375">15/16</option>
+                                <option value="1.0">1</option>
                             </optgroup>
                         </select>
                     </div>
 
-                    <!-- Major Diameter (Custom or Metric) -->
-                    <div class="form-group" id="majorDiameterGroup">
-                        <label for="majorDiameter">Major Diameter</label>
-                        <div class="input-with-unit">
-                            <input type="number" id="majorDiameter" step="0.001" min="0.001" required>
-                            <span class="unit" id="diameterUnit">units</span>
-                        </div>
-                        <small class="help-text">Metric: mm (e.g., 6) | Imperial: inches (e.g., 0.25)</small>
+                    <!-- Imperial TPI Selection -->
+                    <div class="form-group" id="imperialTPIGroup" style="display: none;">
+                        <label for="imperialTPI">Threads Per Inch (TPI)</label>
+                        <select id="imperialTPI">
+                            <option value="">Select TPI...</option>
+                        </select>
+                        <small class="help-text">Available TPI options will appear based on selected size</small>
                     </div>
 
-                    <!-- Pitch/TPI -->
-                    <div class="form-group">
-                        <label for="pitch" id="pitchLabel">Pitch / Threads Per Inch</label>
-                        <div class="input-with-unit">
-                            <input type="number" id="pitch" step="0.001" min="0.001" required>
-                            <span class="unit" id="pitchUnit">units</span>
-                        </div>
-                        <small class="help-text">Metric: pitch in mm (e.g., 1.0) | Imperial: threads per inch (e.g., 20)</small>
+                    <!-- Metric Size Selection -->
+                    <div class="form-group" id="metricSizeGroup" style="display: none;">
+                        <label for="metricSize">Metric Thread Size</label>
+                        <select id="metricSize">
+                            <option value="">Select metric size...</option>
+                            <option value="1.5">M1.5</option>
+                            <option value="1.6">M1.6</option>
+                            <option value="1.8">M1.8</option>
+                            <option value="2">M2</option>
+                            <option value="2.2">M2.2</option>
+                            <option value="2.5">M2.5</option>
+                            <option value="3">M3</option>
+                            <option value="3.5">M3.5</option>
+                            <option value="4">M4</option>
+                            <option value="4.5">M4.5</option>
+                            <option value="5">M5</option>
+                            <option value="5.5">M5.5</option>
+                            <option value="6">M6</option>
+                            <option value="7">M7</option>
+                            <option value="8">M8</option>
+                            <option value="9">M9</option>
+                            <option value="10">M10</option>
+                            <option value="11">M11</option>
+                            <option value="12">M12</option>
+                            <option value="14">M14</option>
+                            <option value="15">M15</option>
+                            <option value="16">M16</option>
+                            <option value="17">M17</option>
+                            <option value="18">M18</option>
+                            <option value="19">M19</option>
+                            <option value="20">M20</option>
+                        </select>
                     </div>
 
-                    <!-- Thread Percentage -->
-                    <div class="form-group">
-                        <label for="threadPercentage">Thread Percentage</label>
-                        <div class="percentage-input">
-                            <input type="number" id="threadPercentage" value="75" min="50" max="100" step="1" required>
-                            <span class="unit">%</span>
-                        </div>
-                        <div class="percentage-guide">
-                            <button type="button" class="preset-btn" data-value="50">50% (hard)</button>
-                            <button type="button" class="preset-btn" data-value="60">60% (tough)</button>
-                            <button type="button" class="preset-btn active" data-value="75">75% (standard)</button>
-                            <button type="button" class="preset-btn" data-value="80">80% (soft)</button>
-                        </div>
-                        <small class="help-text">Standard: 75% | Tough materials: 60-70% | Soft materials: 80-85%</small>
+                    <!-- Metric Pitch Selection -->
+                    <div class="form-group" id="metricPitchGroup" style="display: none;">
+                        <label for="metricPitch">Pitch (mm)</label>
+                        <select id="metricPitch">
+                            <option value="">Select pitch...</option>
+                        </select>
+                        <small class="help-text">Available pitches will appear based on selected size</small>
                     </div>
 
-                    <!-- Calculate Button -->
-                    <button type="submit" class="calculate-btn">Calculate Tap Drill</button>
+                    <!-- Lookup Button -->
+                    <button type="submit" class="calculate-btn">Find Tap Drill</button>
                 </form>
 
                 <!-- Results Section -->
                 <div id="results" class="results hidden">
-                    <h2>Results</h2>
-                    <div class="result-summary">
-                        <div class="result-item primary">
-                            <span class="result-label">Recommended Tap Drill:</span>
-                            <span class="result-value" id="tapDrillValue"></span>
-                        </div>
-                        <div class="result-item" id="standardDrillItem" style="display: none;">
-                            <span class="result-label">Standard Drill Size:</span>
-                            <span class="result-value secondary" id="standardDrillSize"></span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">Thread Specification:</span>
-                            <span class="result-value secondary" id="threadSpec"></span>
-                        </div>
+                    <h2>Recommended Tap Drill</h2>
+                    <div class="result-main">
+                        <div class="drill-size" id="drillSize"></div>
+                        <div class="thread-spec" id="threadSpec"></div>
                     </div>
-                    <div class="calculation-details">
-                        <h3>Calculation Details</h3>
-                        <div id="calculationSteps"></div>
+                    <div class="result-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Decimal Equivalent:</span>
+                            <span class="detail-value" id="decimalValue"></span>
+                        </div>
+                        <div class="detail-row" id="metricDrillRow" style="display: none;">
+                            <span class="detail-label">Drill Size (mm):</span>
+                            <span class="detail-value" id="metricDrill"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Thread Percentage:</span>
+                            <span class="detail-value" id="threadPercentage"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Material Type:</span>
+                            <span class="detail-value" id="materialInfo"></span>
+                        </div>
                     </div>
                 </div>
 
@@ -149,24 +159,24 @@
 
             <!-- Information Section -->
             <div class="info-section">
-                <h2>About Tap Drill Calculation</h2>
+                <h2>About This Tool</h2>
                 <div class="info-grid">
                     <div class="info-card">
-                        <h3>Thread Systems</h3>
+                        <h3>How It Works</h3>
+                        <p>This tool uses pre-compiled tap drill charts to provide accurate drill sizes for standard thread specifications. No calculations - just reliable chart data.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Thread Percentages</h3>
                         <ul>
-                            <li><strong>ISO Metric (M):</strong> International standard, measured in millimeters</li>
-                            <li><strong>American National (UNC/UNF):</strong> Unified thread standard, measured in inches</li>
-                            <li><strong>BSW:</strong> British Standard Whitworth, 55° thread angle</li>
-                            <li><strong>Acme:</strong> Trapezoidal thread, 29° thread angle</li>
+                            <li><strong>75% Thread (Soft):</strong> Aluminum, brass, plastics - easier tapping, adequate strength</li>
+                            <li><strong>50% Thread (Hard):</strong> Steel, stainless steel, cast iron - reduces tap breakage risk</li>
                         </ul>
                     </div>
                     <div class="info-card">
-                        <h3>Thread Percentage Guide</h3>
+                        <h3>Thread Types</h3>
                         <ul>
-                            <li><strong>75%:</strong> Standard for most applications</li>
-                            <li><strong>70%:</strong> Tougher materials, reduces tap breakage</li>
-                            <li><strong>60%:</strong> Very tough materials (stainless steel)</li>
-                            <li><strong>80-85%:</strong> Soft materials (aluminum, brass)</li>
+                            <li><strong>Imperial:</strong> UNC (Coarse) and UNF (Fine) threads measured in inches</li>
+                            <li><strong>Metric:</strong> ISO metric threads with sizes in millimeters</li>
                         </ul>
                     </div>
                 </div>
@@ -174,10 +184,10 @@
         </main>
 
         <footer>
-            <p>Tap Drill Calculator - Calculate tap drill sizes without charts</p>
+            <p>Tap Drill Lookup - Based on standard tap drill charts</p>
         </footer>
     </div>
 
-    <script src="calculator.js"></script>
+    <script src="lookup.js"></script>
 </body>
 </html>
