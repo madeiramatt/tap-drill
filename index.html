@@ -28,8 +28,60 @@
                         </select>
                     </div>
 
-                    <!-- Major Diameter -->
-                    <div class="form-group">
+                    <!-- Material Type (for UNC) -->
+                    <div class="form-group" id="materialTypeGroup" style="display: none;">
+                        <label for="materialType">Material Type</label>
+                        <select id="materialType">
+                            <option value="soft">Soft Materials (Aluminum, Brass, Plastics) - 75% Thread</option>
+                            <option value="hard">Hard Materials (Steel, Stainless, Iron) - 50% Thread</option>
+                            <option value="custom">Custom Thread Percentage</option>
+                        </select>
+                        <small class="help-text">Material type automatically sets recommended thread percentage</small>
+                    </div>
+
+                    <!-- Screw Size Selection (for UNC) -->
+                    <div class="form-group" id="screwSizeGroup" style="display: none;">
+                        <label for="inputMode">Input Mode</label>
+                        <div class="toggle-group">
+                            <button type="button" class="toggle-btn active" data-mode="standard">Standard Screw Size</button>
+                            <button type="button" class="toggle-btn" data-mode="custom">Custom Diameter</button>
+                        </div>
+                    </div>
+
+                    <!-- Standard Screw Size -->
+                    <div class="form-group" id="standardScrewGroup" style="display: none;">
+                        <label for="screwSize">Screw Size</label>
+                        <select id="screwSize">
+                            <option value="">Select size...</option>
+                            <optgroup label="Numbered Sizes">
+                                <option value="0">0-80 / 0-64</option>
+                                <option value="1">1-72 / 1-64</option>
+                                <option value="2">2-64 / 2-56</option>
+                                <option value="3">3-56 / 3-48</option>
+                                <option value="4">4-40</option>
+                                <option value="5">5-40</option>
+                                <option value="6">6-32</option>
+                                <option value="8">8-32</option>
+                                <option value="10">10-32 / 10-24</option>
+                                <option value="12">12-28 / 12-24</option>
+                            </optgroup>
+                            <optgroup label="Fractional Sizes">
+                                <option value="0.25">1/4"-20 / 1/4"-28</option>
+                                <option value="0.3125">5/16"-18 / 5/16"-24</option>
+                                <option value="0.375">3/8"-16 / 3/8"-24</option>
+                                <option value="0.4375">7/16"-14 / 7/16"-20</option>
+                                <option value="0.5">1/2"-13 / 1/2"-20</option>
+                                <option value="0.5625">9/16"-12 / 9/16"-18</option>
+                                <option value="0.625">5/8"-11 / 5/8"-18</option>
+                                <option value="0.75">3/4"-10 / 3/4"-16</option>
+                                <option value="0.875">7/8"-9 / 7/8"-14</option>
+                                <option value="1.0">1"-8 / 1"-12</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- Major Diameter (Custom or Metric) -->
+                    <div class="form-group" id="majorDiameterGroup">
                         <label for="majorDiameter">Major Diameter</label>
                         <div class="input-with-unit">
                             <input type="number" id="majorDiameter" step="0.001" min="0.001" required>
@@ -56,8 +108,8 @@
                             <span class="unit">%</span>
                         </div>
                         <div class="percentage-guide">
+                            <button type="button" class="preset-btn" data-value="50">50% (hard)</button>
                             <button type="button" class="preset-btn" data-value="60">60% (tough)</button>
-                            <button type="button" class="preset-btn" data-value="70">70% (hard)</button>
                             <button type="button" class="preset-btn active" data-value="75">75% (standard)</button>
                             <button type="button" class="preset-btn" data-value="80">80% (soft)</button>
                         </div>
@@ -71,13 +123,19 @@
                 <!-- Results Section -->
                 <div id="results" class="results hidden">
                     <h2>Results</h2>
-                    <div class="result-item">
-                        <span class="result-label">Tap Drill Diameter:</span>
-                        <span class="result-value" id="tapDrillValue"></span>
-                    </div>
-                    <div class="result-item">
-                        <span class="result-label">Thread Specification:</span>
-                        <span class="result-value" id="threadSpec"></span>
+                    <div class="result-summary">
+                        <div class="result-item primary">
+                            <span class="result-label">Recommended Tap Drill:</span>
+                            <span class="result-value" id="tapDrillValue"></span>
+                        </div>
+                        <div class="result-item" id="standardDrillItem" style="display: none;">
+                            <span class="result-label">Standard Drill Size:</span>
+                            <span class="result-value secondary" id="standardDrillSize"></span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Thread Specification:</span>
+                            <span class="result-value secondary" id="threadSpec"></span>
+                        </div>
                     </div>
                     <div class="calculation-details">
                         <h3>Calculation Details</h3>
