@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tap Drill Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Tap Drill Calculator</h1>
+            <p class="subtitle">Calculate tap drill diameter from thread specifications</p>
+        </header>
+
+        <main>
+            <div class="calculator-card">
+                <form id="tapDrillForm">
+                    <!-- Thread System Selection -->
+                    <div class="form-group">
+                        <label for="threadSystem">Thread System</label>
+                        <select id="threadSystem" required>
+                            <option value="">Select thread system...</option>
+                            <option value="ISO">ISO Metric (M)</option>
+                            <option value="UNC">American National Standard (UNC/UNF/UN)</option>
+                            <option value="BSW">British Standard Whitworth (BSW)</option>
+                            <option value="ACME">American National Acme</option>
+                        </select>
+                    </div>
+
+                    <!-- Major Diameter -->
+                    <div class="form-group">
+                        <label for="majorDiameter">Major Diameter</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="majorDiameter" step="0.001" min="0.001" required>
+                            <span class="unit" id="diameterUnit">units</span>
+                        </div>
+                        <small class="help-text">Metric: mm (e.g., 6) | Imperial: inches (e.g., 0.25)</small>
+                    </div>
+
+                    <!-- Pitch/TPI -->
+                    <div class="form-group">
+                        <label for="pitch" id="pitchLabel">Pitch / Threads Per Inch</label>
+                        <div class="input-with-unit">
+                            <input type="number" id="pitch" step="0.001" min="0.001" required>
+                            <span class="unit" id="pitchUnit">units</span>
+                        </div>
+                        <small class="help-text">Metric: pitch in mm (e.g., 1.0) | Imperial: threads per inch (e.g., 20)</small>
+                    </div>
+
+                    <!-- Thread Percentage -->
+                    <div class="form-group">
+                        <label for="threadPercentage">Thread Percentage</label>
+                        <div class="percentage-input">
+                            <input type="number" id="threadPercentage" value="75" min="50" max="100" step="1" required>
+                            <span class="unit">%</span>
+                        </div>
+                        <div class="percentage-guide">
+                            <button type="button" class="preset-btn" data-value="60">60% (tough)</button>
+                            <button type="button" class="preset-btn" data-value="70">70% (hard)</button>
+                            <button type="button" class="preset-btn active" data-value="75">75% (standard)</button>
+                            <button type="button" class="preset-btn" data-value="80">80% (soft)</button>
+                        </div>
+                        <small class="help-text">Standard: 75% | Tough materials: 60-70% | Soft materials: 80-85%</small>
+                    </div>
+
+                    <!-- Calculate Button -->
+                    <button type="submit" class="calculate-btn">Calculate Tap Drill</button>
+                </form>
+
+                <!-- Results Section -->
+                <div id="results" class="results hidden">
+                    <h2>Results</h2>
+                    <div class="result-item">
+                        <span class="result-label">Tap Drill Diameter:</span>
+                        <span class="result-value" id="tapDrillValue"></span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Thread Specification:</span>
+                        <span class="result-value" id="threadSpec"></span>
+                    </div>
+                    <div class="calculation-details">
+                        <h3>Calculation Details</h3>
+                        <div id="calculationSteps"></div>
+                    </div>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="error-message hidden"></div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="info-section">
+                <h2>About Tap Drill Calculation</h2>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Thread Systems</h3>
+                        <ul>
+                            <li><strong>ISO Metric (M):</strong> International standard, measured in millimeters</li>
+                            <li><strong>American National (UNC/UNF):</strong> Unified thread standard, measured in inches</li>
+                            <li><strong>BSW:</strong> British Standard Whitworth, 55° thread angle</li>
+                            <li><strong>Acme:</strong> Trapezoidal thread, 29° thread angle</li>
+                        </ul>
+                    </div>
+                    <div class="info-card">
+                        <h3>Thread Percentage Guide</h3>
+                        <ul>
+                            <li><strong>75%:</strong> Standard for most applications</li>
+                            <li><strong>70%:</strong> Tougher materials, reduces tap breakage</li>
+                            <li><strong>60%:</strong> Very tough materials (stainless steel)</li>
+                            <li><strong>80-85%:</strong> Soft materials (aluminum, brass)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Tap Drill Calculator - Calculate tap drill sizes without charts</p>
+        </footer>
+    </div>
+
+    <script src="calculator.js"></script>
+</body>
+</html>
