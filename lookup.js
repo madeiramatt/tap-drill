@@ -614,10 +614,10 @@ class TapDrillLookup {
         } else {
             // Imperial specifications
             document.getElementById('specMajorDiameter').textContent = `${result.majorDiameter.toFixed(4)}"`;
-            document.getElementById('specPitch').textContent = `${result.pitch.toFixed(6)}" (1/${result.tpi})`;
+            document.getElementById('specPitch').textContent = `${result.pitch.toFixed(4)}" (1/${result.tpi})`;
             document.getElementById('specMinorDiameter').textContent = `${result.minorDiameter.toFixed(4)}"`;
-            document.getElementById('specThreadDepth').textContent = `${result.threadDepth.toFixed(6)}"`;
-            document.getElementById('specCrestFlat').textContent = `${result.crestFlat.toFixed(6)}"`;
+            document.getElementById('specThreadDepth').textContent = `${result.threadDepth.toFixed(4)}"`;
+            document.getElementById('specCrestFlat').textContent = `${result.crestFlat.toFixed(4)}"`;
         }
 
         // Show results
