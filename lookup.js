@@ -1,5 +1,62 @@
 // Tap Drill Lookup Tables - Pre-compiled chart data
 
+// Major Diameter Lookup for Imperial Sizes
+const MAJOR_DIAMETERS_IMPERIAL = {
+    "0": 0.0600,
+    "1": 0.0730,
+    "2": 0.0860,
+    "3": 0.0990,
+    "4": 0.1120,
+    "5": 0.1250,
+    "6": 0.1380,
+    "8": 0.1640,
+    "10": 0.1900,
+    "12": 0.2160,
+    "0.25": 0.2500,
+    "0.3125": 0.3125,
+    "0.375": 0.3750,
+    "0.4375": 0.4375,
+    "0.5": 0.5000,
+    "0.5625": 0.5625,
+    "0.625": 0.6250,
+    "0.6875": 0.6875,
+    "0.75": 0.7500,
+    "0.8125": 0.8125,
+    "0.875": 0.8750,
+    "0.9375": 0.9375,
+    "1.0": 1.0000
+};
+
+// Major Diameter Lookup for Metric Sizes
+const MAJOR_DIAMETERS_METRIC = {
+    "1.5": 1.5,
+    "1.6": 1.6,
+    "1.8": 1.8,
+    "2": 2.0,
+    "2.2": 2.2,
+    "2.5": 2.5,
+    "3": 3.0,
+    "3.5": 3.5,
+    "4": 4.0,
+    "4.5": 4.5,
+    "5": 5.0,
+    "5.5": 5.5,
+    "6": 6.0,
+    "7": 7.0,
+    "8": 8.0,
+    "9": 9.0,
+    "10": 10.0,
+    "11": 11.0,
+    "12": 12.0,
+    "14": 14.0,
+    "15": 15.0,
+    "16": 16.0,
+    "17": 17.0,
+    "18": 18.0,
+    "19": 19.0,
+    "20": 20.0
+};
+
 // Imperial Threads - 75% Thread (Soft Materials)
 const IMPERIAL_75 = {
     // Format: "size-tpi": { drill: "drill_name", decimal: decimal_inches }
@@ -421,7 +478,7 @@ class TapDrillLookup {
 
     lookupImperial(materialType) {
         const size = this.imperialSize.value;
-        const tpi = this.imperialTPI.value;
+        const tpi = parseInt(this.imperialTPI.value);
 
         if (!size) {
             throw new Error('Please select a thread size.');
@@ -445,19 +502,35 @@ class TapDrillLookup {
             ? 'Aluminum, Brass, Plastics'
             : 'Steel, Stainless Steel, Cast Iron';
 
+        // Get major diameter
+        const majorDiameter = MAJOR_DIAMETERS_IMPERIAL[size];
+
+        // Calculate thread specifications
+        const pitch = 1 / tpi;  // Pitch = 1/TPI
+        const threadDepth = 0.61343 * pitch;  // Depth of external thread
+        const minorDiameter = majorDiameter - (2 * threadDepth);  // Minor diameter
+        const crestFlat = pitch / 8;  // Width of flat of crest
+
         return {
             drillSize: `#${data.drill}`,
             threadSpec: `${sizeName}-${tpi}`,
             decimal: data.decimal.toFixed(4),
             threadPercentage: threadPercentage,
             materialInfo: materialInfo,
-            isMetric: false
+            isMetric: false,
+            // Thread specifications
+            majorDiameter: majorDiameter,
+            pitch: pitch,
+            threadDepth: threadDepth,
+            minorDiameter: minorDiameter,
+            crestFlat: crestFlat,
+            tpi: tpi
         };
     }
 
     lookupMetric(materialType) {
         const size = this.metricSize.value;
-        const pitch = this.metricPitch.value;
+        const pitch = parseFloat(this.metricPitch.value);
 
         if (!size) {
             throw new Error('Please select a metric thread size.');
@@ -480,6 +553,14 @@ class TapDrillLookup {
             ? 'Aluminum, Brass, Plastics'
             : 'Steel, Stainless Steel, Cast Iron';
 
+        // Get major diameter
+        const majorDiameter = MAJOR_DIAMETERS_METRIC[size];
+
+        // Calculate thread specifications (metric)
+        const threadDepth = 0.6134 * pitch;  // Depth of external thread (metric)
+        const minorDiameter = majorDiameter - (2 * threadDepth);  // Minor diameter
+        const crestFlat = pitch / 8;  // Width of flat of crest
+
         return {
             drillSize: data.drillUS,
             threadSpec: `M${size}×${pitch}`,
@@ -487,7 +568,13 @@ class TapDrillLookup {
             drillMM: data.drillMM.toFixed(2),
             threadPercentage: threadPercentage,
             materialInfo: materialInfo,
-            isMetric: true
+            isMetric: true,
+            // Thread specifications
+            majorDiameter: majorDiameter,
+            pitch: pitch,
+            threadDepth: threadDepth,
+            minorDiameter: minorDiameter,
+            crestFlat: crestFlat
         };
     }
 
@@ -515,6 +602,23 @@ class TapDrillLookup {
 
         // Update material info
         document.getElementById('materialInfo').textContent = result.materialInfo;
+
+        // Update thread specifications
+        if (result.isMetric) {
+            // Metric specifications
+            document.getElementById('specMajorDiameter').textContent = `${result.majorDiameter.toFixed(2)} mm`;
+            document.getElementById('specPitch').textContent = `${result.pitch.toFixed(2)} mm`;
+            document.getElementById('specMinorDiameter').textContent = `${result.minorDiameter.toFixed(4)} mm`;
+            document.getElementById('specThreadDepth').textContent = `${result.threadDepth.toFixed(4)} mm`;
+            document.getElementById('specCrestFlat').textContent = `${result.crestFlat.toFixed(4)} mm`;
+        } else {
+            // Imperial specifications
+            document.getElementById('specMajorDiameter').textContent = `${result.majorDiameter.toFixed(4)}"`;
+            document.getElementById('specPitch').textContent = `${result.pitch.toFixed(6)}" (1/${result.tpi})`;
+            document.getElementById('specMinorDiameter').textContent = `${result.minorDiameter.toFixed(4)}"`;
+            document.getElementById('specThreadDepth').textContent = `${result.threadDepth.toFixed(6)}"`;
+            document.getElementById('specCrestFlat').textContent = `${result.crestFlat.toFixed(6)}"`;
+        }
 
         // Show results
         this.results.classList.remove('hidden');
