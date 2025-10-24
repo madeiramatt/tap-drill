@@ -297,7 +297,9 @@ const IMPERIAL_TPI_OPTIONS = {
     "0.8125": [20],
     "0.875": [9, 14, 20],
     "0.9375": [20],
-    "1.0": [8, 12, 20]
+    "1.0": [8, 12, 20],
+    "1.125: [7, 12]
+    
 };
 
 // Pitch options for each metric size
